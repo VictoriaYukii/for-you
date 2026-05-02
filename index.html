@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Untuk Kamu 💕</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <div class="sparkles" id="sparkles"></div>
+  <div class="particles-container" id="particles"></div>
+
+  <div class="wrapper">
+
+    <!-- =====================================================
+         TEKS JUDUL — ubah sesukamu
+    ====================================================== -->
+    <div class="title-text">Untuk Kamu yang Selalu di Hati 💕</div>
+    <div class="subtitle-text">— selamanya —</div>
+
+    <div class="orbit-scene" id="scene">
+      <!-- orbit trail ellipse (dekoratif) -->
+      <svg class="orbit-ellipse" width="370" height="130" viewBox="0 0 370 130">
+        <ellipse cx="185" cy="65" rx="172" ry="58"
+                 fill="none" stroke="#ffb3cc" stroke-width="1"
+                 stroke-dasharray="6 5" opacity="0.45"/>
+      </svg>
+
+      <!-- hati tengah -->
+      <div class="center-heart" id="mainHeart">❤️</div>
+    </div>
+
+    <!-- =====================================================
+         MUSIC PLAYER
+         Ganti src di <audio> dengan path file musik kamu
+         contoh: src="lagu.mp3"
+         Ganti teks NAMA LAGU dan ARTIS di bawah ini
+    ====================================================== -->
+    <div class="music-bar">
+      <button class="music-btn" id="playBtn" onclick="togglePlay()">▶</button>
+      <div class="music-info">
+        <div class="music-title">Kota ini tak sama tanpamu</div>        <!-- ← GANTI INI -->
+        <div class="music-artist">Our Song❤️</div> <!-- ← GANTI INI -->
+      </div>
+      <div class="wave-bars" id="waveBars"></div>
+    </div>
+
+    <!-- Ganti src="lagu.mp3" dengan nama file lagu kamu -->
+   <audio id="audioEl" loop autoplay src="assets/lagu.mp3"></audio>           <!-- ← GANTI src -->
+
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
