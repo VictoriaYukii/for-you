@@ -224,6 +224,7 @@ function escapeHtml(s){ return String(s||'').replace(/[&<>"']/g, function(c){ re
 // Handle diary form (supports localStorage fallback or Firebase when configured)
 document.getElementById('diaryForm').addEventListener('submit', async (ev) => {
   ev.preventDefault();
+  console.log('diary submit invoked', { firebaseEnabled: window._firebaseEnabled, currentUser: window._currentUser, ownerUID: window.FIREBASE_OWNER_UID });
   const title = document.getElementById('entryTitle').value.trim();
   const body = document.getElementById('entryBody').value.trim();
   const dateVal = document.getElementById('entryDate').value;
@@ -236,6 +237,7 @@ document.getElementById('diaryForm').addEventListener('submit', async (ev) => {
 
   // If Firebase is enabled and user is owner, upload to Storage + Firestore
   if (window._firebaseEnabled && window._currentUser && window.FIREBASE_OWNER_UID && window._currentUser.uid === window.FIREBASE_OWNER_UID) {
+    console.log('Submitting via Firebase for owner', window._currentUser.uid);
     try {
       // upload files to storage
       const photoUrls = [];
@@ -254,11 +256,12 @@ document.getElementById('diaryForm').addEventListener('submit', async (ev) => {
       alert('Tersimpan ke server!');
     } catch (err) {
       console.error(err);
-      alert('Gagal menyimpan ke server. Lihat console.');
+      alert('Gagal menyimpan ke server. Lihat console. ' + (err && err.message ? err.message : ''));
     }
     return;
   }
 
+  console.log('Using local fallback save (Firebase not used or not owner)');
   // Fallback: localStorage (same as before)
   const readFile = (f) => new Promise((res, rej) => {
     const r = new FileReader();
