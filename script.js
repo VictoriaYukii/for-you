@@ -438,10 +438,16 @@ async function initFirebase() {
     // listen to entries collection
     const q = window._queryFunc(window._collectionFunc(db, 'entries'), window._orderByFunc('created', 'desc'));
     window._onSnapshotFunc(q, (snap) => {
-      remoteEntries = snap.docs.map(d => ({ id: d.id, ...d.data() }));
-      renderEntriesRemote();
-      buildGalleryFromEntries(remoteEntries);
-      buildLandingFloat(remoteEntries);
+      try {
+        console.log('Firestore onSnapshot received', { size: snap.size });
+        remoteEntries = snap.docs.map(d => ({ id: d.id, ...d.data() }));
+        console.log('remoteEntries sample', remoteEntries.slice(0,5));
+        renderEntriesRemote();
+        buildGalleryFromEntries(remoteEntries);
+        buildLandingFloat(remoteEntries);
+      } catch (e) {
+        console.error('Error processing onSnapshot', e);
+      }
     });
   } catch (err) {
     console.error('Firebase init error', err);
