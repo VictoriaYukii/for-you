@@ -279,6 +279,7 @@ body {
   color: #c94075;
   text-align: center;
   letter-spacing: 0.5px;
+  margin-top: 40px;
   animation: slideUp 0.8s ease 0.4s both;
 }
 
@@ -286,7 +287,7 @@ body {
   font-size: 13px;
   color: #d47fa0;
   font-style: italic;
-  margin-bottom: 4px;
+  margin: 10px 0 4px;
   animation: slideUp 0.8s ease 0.7s both;
 }
 
