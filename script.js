@@ -240,7 +240,8 @@ document.getElementById('diaryForm').addEventListener('submit', async (ev) => {
     console.log('Submitting via Firebase for owner', window._currentUser.uid);
     let photoUrls = [];
     let fallbackPhotos = [];
-    if (files.length) {
+    const useStorage = !window._storageUploadDisabled && files.length;
+    if (useStorage) {
       try {
         for (const f of files) {
           const fname = `${Date.now()}_${f.name.replace(/[^a-zA-Z0-9._-]/g,'_')}`;
@@ -250,7 +251,8 @@ document.getElementById('diaryForm').addEventListener('submit', async (ev) => {
           photoUrls.push(url);
         }
       } catch (uploadErr) {
-        console.warn('Firebase Storage upload failed; falling back to Firestore-based photos.', uploadErr);
+        console.warn('Firebase Storage upload failed; disabling storage upload and falling back to Firestore-based photos.', uploadErr);
+        window._storageUploadDisabled = true;
         try {
           const readFile = (f) => new Promise((res, rej) => {
             const r = new FileReader();
@@ -263,6 +265,20 @@ document.getElementById('diaryForm').addEventListener('submit', async (ev) => {
           console.error('Failed to read files for Firestore photo fallback', readErr);
           fallbackPhotos = [];
         }
+      }
+    } else if (files.length) {
+      console.log('Skipping Firebase Storage upload because storage upload is disabled or no files selected. Using Firestore fallback.');
+      try {
+        const readFile = (f) => new Promise((res, rej) => {
+          const r = new FileReader();
+          r.onload = () => res(r.result);
+          r.onerror = rej;
+          r.readAsDataURL(f);
+        });
+        fallbackPhotos = await Promise.all(files.map(readFile));
+      } catch (readErr) {
+        console.error('Failed to read files for Firestore photo fallback', readErr);
+        fallbackPhotos = [];
       }
     }
 
