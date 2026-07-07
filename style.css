@@ -127,8 +127,9 @@ body {
 
 /* PAGES */
 .site {
-  width: 100%;
+  width: min(100%, 980px);
   max-width: 980px;
+  margin: 0 auto;
   padding: 80px 20px 40px;
 }
 .page { display: none; position: relative; }
