@@ -321,7 +321,7 @@ body {
 .center-heart {
   position: absolute;
   left: 50%;
-  top: 38%;
+  top: 45%;
   font-size: 190px;
   line-height: 1;
   animation:
@@ -336,7 +336,7 @@ body {
 .center-credit {
   position: absolute;
   left: 50%;
-  top: calc(38% + 170px);
+  top: calc(45% + 170px);
   transform: translateX(-50%);
   font-family: 'Brush Script MT', 'Dancing Script', cursive;
   font-size: 52px;
