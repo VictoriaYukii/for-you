@@ -7,50 +7,103 @@
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-
   <div class="sparkles" id="sparkles"></div>
   <div class="particles-container" id="particles"></div>
 
-  <div class="wrapper">
-
-    <!-- =====================================================
-         TEKS JUDUL — ubah sesukamu
-    ====================================================== -->
-    <div class="title-text">Untuk Kamu yang Selalu di Hati 💕</div>
-    <div class="subtitle-text">— selamanya —</div>
-
-    <div class="orbit-scene" id="scene">
-      <!-- orbit trail ellipse (dekoratif) -->
-      <svg class="orbit-ellipse" width="370" height="130" viewBox="0 0 370 130">
-        <ellipse cx="185" cy="65" rx="172" ry="58"
-                 fill="none" stroke="#ffb3cc" stroke-width="1"
-                 stroke-dasharray="6 5" opacity="0.45"/>
-      </svg>
-
-      <!-- hati tengah -->
-      <div class="center-heart" id="mainHeart">❤️</div>
+  <nav class="topnav">
+    <div class="nav-left">
+      <span class="nav-indicator"></span>
+      <a href="#" data-target="landing" class="navlink active">Landing</a>
+      <a href="#" data-target="gallery" class="navlink">Gallery</a>
+      <a href="#" data-target="diary" class="navlink">Diary</a>
+      <a href="#" data-target="memories" class="navlink">Memories</a>
     </div>
+  </nav>
 
-    <!-- =====================================================
-         MUSIC PLAYER
-         Ganti src di <audio> dengan path file musik kamu
-         contoh: src="lagu.mp3"
-         Ganti teks NAMA LAGU dan ARTIS di bawah ini
-    ====================================================== -->
-    <div class="music-bar">
-      <button class="music-btn" id="playBtn" onclick="togglePlay()">▶</button>
-      <div class="music-info">
-        <div class="music-title">Kota ini tak sama tanpamu</div>        <!-- ← GANTI INI -->
-        <div class="music-artist">Our Song❤️</div> <!-- ← GANTI INI -->
+  <main class="site">
+
+    <!-- LANDING -->
+    <section id="landing" class="page active">
+      <div id="landingFloat" class="landing-float"></div>
+      <div class="wrapper">
+        <div class="title-text">Untuk Kamu yang Selalu di Hati 💕</div>
+        <div class="subtitle-text">— selamanya —</div>
+
+        <div class="orbit-scene" id="scene">
+          <svg class="orbit-ellipse" width="370" height="130" viewBox="0 0 370 130">
+            <ellipse cx="185" cy="65" rx="172" ry="58"
+                     fill="none" stroke="#ffb3cc" stroke-width="1"
+                     stroke-dasharray="6 5" opacity="0.45"/>
+          </svg>
+          <div class="center-heart" id="mainHeart">❤️</div>
+          <div class="center-credit">— Victoria —</div>
+        </div>
+
+        <div class="music-bar">
+          <button class="music-btn" id="playBtn" onclick="togglePlay()">▶</button>
+          <div class="music-info">
+            <div class="music-title">Kota ini tak sama tanpamu</div>
+            <div class="music-artist">Our Song❤️</div>
+          </div>
+          <div class="wave-bars" id="waveBars"></div>
+        </div>
+
+        <audio id="audioEl" loop src="assets/lagu.mp3"></audio>
       </div>
-      <div class="wave-bars" id="waveBars"></div>
+    </section>
+
+    <!-- GALLERY -->
+    <section id="gallery" class="page">
+      <h2 class="section-title">Gallery</h2>
+      <div id="galleryGrid" class="gallery-grid"></div>
+    </section>
+
+    <!-- DIARY (WRITE) -->
+    <section id="diary" class="page">
+      <h2 class="section-title">Write in Diary</h2>
+      <div class="diary-auth">
+        <button id="signInBtn" class="auth-btn">Sign in</button>
+        <button id="signOutBtn" class="auth-btn" style="display:none">Sign out</button>
+        <span id="userHint" class="user-hint"></span>
+      </div>
+      <div id="localSignInForm" class="local-signin-form" style="display:none;">
+        <input id="localPassInput" type="password" placeholder="Passphrase owner" />
+        <button id="localPassSubmit" class="auth-btn">Submit</button>
+      </div>
+      <form id="diaryForm" class="diary-form">
+        <input type="text" id="entryTitle" placeholder="Judul" required />
+        <textarea id="entryBody" rows="6" placeholder="Tulis kenanganmu di sini..." required></textarea>
+        <label class="file-label">Tambah foto (boleh lebih dari satu):
+          <input type="file" id="entryPhotos" accept="image/*" multiple />
+          <span class="file-btn">Pilih Foto</span>
+          <span class="file-names">Belum ada foto</span>
+        </label>
+        <div id="photoPreview" class="photo-preview" aria-hidden="true"></div>
+        <div class="form-row">
+          <input type="date" id="entryDate" />
+          <button type="submit">Simpan</button>
+        </div>
+      </form>
+    </section>
+
+    <!-- MEMORIES (VIEW) -->
+    <section id="memories" class="page">
+      <h2 class="section-title">Memories</h2>
+      <div id="entriesList" class="entries-list"></div>
+    </section>
+
+  </main>
+
+  <!-- IMAGE VIEWER MODAL -->
+  <div id="imgModal" class="img-modal" aria-hidden="true">
+    <div class="img-modal-content">
+      <button id="modalClose" class="modal-close">✕</button>
+      <img id="modalImg" src="" alt="" />
+      <div id="modalCaption" class="modal-caption"></div>
     </div>
-
-    <!-- Ganti src="lagu.mp3" dengan nama file lagu kamu -->
-   <audio id="audioEl" loop src="assets/lagu.mp3"></audio>           <!-- ← GANTI src -->
-
   </div>
 
-  <script src="script.js"></script>
+  <script src="firebase-config.js"></script>
+  <script type="module" src="script.js"></script>
 </body>
 </html>
