@@ -8,7 +8,7 @@ window.FIREBASE_CONFIG = {
   apiKey: "AIzaSyAIkRtPjYUIVswDJRZGdh8NPGh33v7GvMY",
   authDomain: "diary-website-90e8d.firebaseapp.com",
   projectId: "diary-website-90e8d",
-  storageBucket: "diary-website-90e8d.firebasestorage.app",
+  storageBucket: "diary-website-90e8d.appspot.com",
   messagingSenderId: "208125825408",
   appId: "1:208125825408:web:ae62d89bbfdb6dd13bb165",
 };
