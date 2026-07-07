@@ -441,6 +441,11 @@ async function initFirebase() {
       try {
         console.log('Firestore onSnapshot received', { size: snap.size });
         remoteEntries = snap.docs.map(d => ({ id: d.id, ...d.data() }));
+        try {
+          // Persist remote entries to localStorage to avoid duplicate local+remote items
+          const normalized = remoteEntries.map(e => ({ id: e.id, title: e.title, body: e.body, date: e.date, created: e.created || Date.now(), photos: e.photos || [] }));
+          try { saveEntries(normalized); console.log('Saved remote entries to localStorage (synced).'); } catch (se) { console.warn('Could not save remote entries locally', se); }
+        } catch (e2) { console.error('Error normalizing remote entries', e2); }
         console.log('remoteEntries sample', remoteEntries.slice(0,5));
         renderEntriesRemote();
         buildGalleryFromEntries(remoteEntries);
