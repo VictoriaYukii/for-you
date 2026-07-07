@@ -4,8 +4,15 @@
 // 3) Replace the placeholder config below with your project's config object.
 // 4) Set OWNER_UID to your Firebase user UID (from Auth user detail) to restrict writes.
 
-window.FIREBASE_CONFIG = null; // e.g. { apiKey: '...', authDomain: '...', projectId: '...', storageBucket: '...', messagingSenderId: '...', appId: '...' }
-window.FIREBASE_OWNER_UID = null; // e.g. 'abcd1234...'
+window.FIREBASE_CONFIG = {
+  apiKey: "AIzaSyAIkRtPjYUIVswDJRZGdh8NPGh33v7GvMY",
+  authDomain: "diary-website-90e8d.firebaseapp.com",
+  projectId: "diary-website-90e8d",
+  storageBucket: "diary-website-90e8d.firebasestorage.app",
+  messagingSenderId: "208125825408",
+  appId: "1:208125825408:web:ae62d89bbfdb6dd13bb165",
+};
+window.FIREBASE_OWNER_UID = 'i5CtiNaUA4YsPYTRcFZSmIN7BIH3';
 // Optional local owner passphrase (ONLY use for local testing). If set, visitors who enter
 // this passphrase can be treated as the owner on this device (no server auth).
 // Set to null to disable local pass.
