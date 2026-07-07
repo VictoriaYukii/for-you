@@ -582,3 +582,16 @@ function initLocalAuthFallback() {
 
 initLocalAuthFallback();
 
+// Debug: button handler for manual inspection of remote entries
+try {
+  const debugBtn = document.getElementById('debugShowRemote');
+  if (debugBtn) {
+    debugBtn.addEventListener('click', () => {
+      console.log('Debug button clicked. remoteEntries length:', remoteEntries ? remoteEntries.length : 0);
+      console.log('remoteEntries full:', remoteEntries);
+      try { renderEntriesRemote(); } catch (e) { console.error('renderEntriesRemote error', e); }
+      alert('remoteEntries: ' + (remoteEntries ? remoteEntries.length : 0));
+    });
+  }
+} catch (e) { console.error('debug button init error', e); }
+
