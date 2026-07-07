@@ -235,25 +235,56 @@ document.getElementById('diaryForm').addEventListener('submit', async (ev) => {
     if (!window._localOwner) { alert('Hanya owner dapat memposting. Silakan sign in.'); return; }
   }
 
-  // If Firebase is enabled and user is owner, upload to Storage + Firestore
+  // If Firebase is enabled and user is owner, save to Firestore.
   if (window._firebaseEnabled && window._currentUser && window.FIREBASE_OWNER_UID && window._currentUser.uid === window.FIREBASE_OWNER_UID) {
     console.log('Submitting via Firebase for owner', window._currentUser.uid);
-    try {
-      // upload files to storage
-      const photoUrls = [];
-      for (const f of files) {
-        const fname = `${Date.now()}_${f.name.replace(/[^a-zA-Z0-9._-]/g,'_')}`;
-        const sref = window._storageRefFunc(`entries/${window._currentUser.uid}/${fname}`);
-        await window._uploadBytesFunc(sref, f);
-        const url = await window._getDownloadURLFunc(sref);
-        photoUrls.push(url);
+    let photoUrls = [];
+    let fallbackPhotos = [];
+    if (files.length) {
+      try {
+        for (const f of files) {
+          const fname = `${Date.now()}_${f.name.replace(/[^a-zA-Z0-9._-]/g,'_')}`;
+          const sref = window._storageRefFunc(`entries/${window._currentUser.uid}/${fname}`);
+          await window._uploadBytesFunc(sref, f);
+          const url = await window._getDownloadURLFunc(sref);
+          photoUrls.push(url);
+        }
+      } catch (uploadErr) {
+        console.warn('Firebase Storage upload failed; falling back to Firestore-based photos.', uploadErr);
+        try {
+          const readFile = (f) => new Promise((res, rej) => {
+            const r = new FileReader();
+            r.onload = () => res(r.result);
+            r.onerror = rej;
+            r.readAsDataURL(f);
+          });
+          fallbackPhotos = await Promise.all(files.map(readFile));
+        } catch (readErr) {
+          console.error('Failed to read files for Firestore photo fallback', readErr);
+          fallbackPhotos = [];
+        }
       }
-      // save document
-      await window._addDocFunc(window._collectionFunc(window._db, 'entries'), { title, body, date: dateVal, photos: photoUrls, ownerUid: window._currentUser.uid, created: Date.now() });
+    }
+
+    try {
+      await window._addDocFunc(window._collectionFunc(window._db, 'entries'), {
+        title,
+        body,
+        date: dateVal,
+        photos: photoUrls.length ? photoUrls : fallbackPhotos,
+        ownerUid: window._currentUser.uid,
+        created: Date.now()
+      });
       document.getElementById('diaryForm').reset();
       photoPreviewEl.innerHTML = '';
       fileNamesEl.textContent = 'Belum ada foto';
-      alert('Tersimpan ke server!');
+      if (files.length && !photoUrls.length && fallbackPhotos.length) {
+        alert('Tersimpan ke server dengan foto menggunakan Firestore fallback. Foto tersedia dari device lain, tapi mungkin lebih lambat.');
+      } else if (files.length && !photoUrls.length) {
+        alert('Tersimpan ke server, tapi foto tidak berhasil disimpan. Coba tanpa foto.');
+      } else {
+        alert('Tersimpan ke server!');
+      }
     } catch (err) {
       console.error(err);
       alert('Gagal menyimpan ke server. Lihat console. ' + (err && err.message ? err.message : ''));
