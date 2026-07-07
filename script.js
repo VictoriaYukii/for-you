@@ -393,7 +393,12 @@ async function initFirebase() {
       try {
         const provider = new GoogleAuthProvider();
         await signInWithPopup(auth, provider);
-      } catch (e) { console.error('signin', e); alert('Gagal sign in'); }
+      } catch (e) {
+        console.error('signin', e);
+        const msg = (e && e.message) ? e.message : String(e);
+        alert('Gagal sign in: ' + msg);
+        if (userHint) userHint.textContent = 'Sign-in error: ' + msg;
+      }
     });
 
     signOutBtn.addEventListener('click', async () => { await signOut(auth); });
